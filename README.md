@@ -1,2 +1,0 @@
-# Statically Linked Arm Bin
-

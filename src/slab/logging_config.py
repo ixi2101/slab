@@ -9,11 +9,11 @@ def setup_logging(
     log_file: Optional[str] = None,
     rotation: str = "10 MB",
     retention: str = "7 days",
-    format_string: Optional[str] = None
+    format_string: Optional[str] = None,
 ) -> None:
     """
     Configure loguru logging for the slab project.
-    
+
     Args:
         level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         log_file: Optional file path for logging to file
@@ -23,7 +23,7 @@ def setup_logging(
     """
     # Remove default logger
     logger.remove()
-    
+
     # Default format for console output
     if format_string is None:
         format_string = (
@@ -32,7 +32,7 @@ def setup_logging(
             "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
             "<level>{message}</level>"
         )
-    
+
     # Add console handler
     logger.add(
         sys.stderr,
@@ -40,16 +40,16 @@ def setup_logging(
         level=level,
         colorize=True,
         backtrace=True,
-        diagnose=True
+        diagnose=True,
     )
-    
+
     # Add file handler if specified
     if log_file:
         # Ensure log directory exists
         log_dir = os.path.dirname(log_file)
         if log_dir:
             os.makedirs(log_dir, exist_ok=True)
-            
+
         logger.add(
             log_file,
             format=format_string,
@@ -58,9 +58,9 @@ def setup_logging(
             retention=retention,
             backtrace=True,
             diagnose=True,
-            enqueue=True  # Thread-safe logging
+            enqueue=True,  # Thread-safe logging
         )
-    
+
     logger.info(f"Logging configured with level: {level}")
     if log_file:
         logger.info(f"Log file: {log_file}")
@@ -69,10 +69,10 @@ def setup_logging(
 def get_logger(name: str):
     """
     Get a logger instance with the given name.
-    
+
     Args:
         name: Name for the logger (typically __name__)
-        
+
     Returns:
         Configured logger instance
     """

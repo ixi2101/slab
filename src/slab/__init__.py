@@ -1,6 +1,7 @@
 import typer
 from . import builder
 from .logging_config import setup_logging, get_logger
+from pathlib import Path
 
 app = typer.Typer()
 logger = get_logger(__name__)
@@ -13,14 +14,14 @@ def build(
         False, "--verbose", "-v", help="Enable verbose logging"
     ),
     log_file: str = typer.Option(None, "--log-file", help="Log to file"),
-):
+) -> None:
     """Build cross-compiled binaries."""
     # Setup logging
     log_level = "DEBUG" if verbose else "INFO"
     setup_logging(level=log_level, log_file=log_file)
 
     logger.info(f"Starting build for binary: {binary}")
-    b = builder.Builder("./output")
+    b = builder.Builder(Path("./output"))
     match binary:
         case "strace":
             logger.info("Building strace")

@@ -1,3 +1,4 @@
+from loguru import Logger
 from typing import Optional
 from loguru import logger
 import sys
@@ -66,7 +67,7 @@ def setup_logging(
         logger.info(f"Log file: {log_file}")
 
 
-def get_logger(name: str):
+def get_logger(name: str) -> Logger:
     """
     Get a logger instance with the given name.
 

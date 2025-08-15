@@ -1,11 +1,13 @@
+from loguru import Logger
 from typing import Dict, Optional
 import docker
 from docker.client import DockerClient
 from docker.models.images import Image
+import docker.errors
 import os
 from .logging_config import get_logger
 
-logger = get_logger(__name__)
+logger: Logger = get_logger(__name__)
 
 
 class ContainerRunner:
@@ -42,7 +44,7 @@ class ContainerRunner:
         """Build a Docker image from a Dockerfile"""
         try:
             logger.debug(f"Building image {tag} from {dockerfile_path}")
-            image, build_logs = self.client.images.build(
+            image, build_logs = self.client.images.build(  # pyrefly: ignore
                 path=context,
                 dockerfile=os.path.basename(dockerfile_path),
                 tag=tag,
@@ -50,7 +52,7 @@ class ContainerRunner:
                 forcerm=True,
             )
             logger.success(f"Successfully built image: {tag}")
-            return image
+            return image  # pyrefly: ignore
         except docker.errors.BuildError as e:
             logger.error(f"Failed to build image {tag}: {e}")
             return None
